@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OncoMonitor | Personalised Chemo Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="bg-glow"></div>
+
+    <!-- Authentication Wrapper -->
+    <div id="authWrapper" class="auth-wrapper">
+        <div class="auth-card glass">
+            <div class="auth-header">
+                <div class="logo">
+                    <i data-lucide="activity" style="color: var(--primary)"></i>
+                    <span>OncoMonitor</span>
+                </div>
+                <h2 id="authTitle">Welcome Back</h2>
+                <p id="authSubtitle">Please enter your details to login</p>
+            </div>
+
+            <!-- Role Selector Toggle -->
+            <div class="role-selector-container">
+                <button id="doctorToggle" class="role-btn active" onclick="setAuthRole('doctor')">Doctor</button>
+                <button id="patientToggle" class="role-btn" onclick="setAuthRole('patient')">Patient</button>
+            </div>
+
+            <!-- Login Form -->
+            <form id="loginForm" class="auth-form" onsubmit="event.preventDefault(); handleLogin();">
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <input type="email" placeholder="name@hospital.com" required id="loginEmail">
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" placeholder="••••••••" required id="loginPass">
+                </div>
+                <button type="submit" class="auth-submit-btn">Login to Dashboard</button>
+            </form>
+
+            <!-- Register Form (Hidden) -->
+            <form id="registerForm" class="auth-form hidden" onsubmit="event.preventDefault(); handleRegister();">
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" placeholder="Dr. Sarah Mitchell" required id="regName">
+                </div>
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <input type="email" placeholder="sarah@hospital.com" required id="regEmail">
+                </div>
+                <div id="doctorFields" class="form-group">
+                    <label>Medical License Number</label>
+                    <input type="text" placeholder="MD-99821-XX" id="regLicense">
+                </div>
+                <div id="patientFields" class="form-group hidden">
+                    <label>Patient/Clinic ID</label>
+                    <input type="text" placeholder="ID-8821" id="regPatientId">
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" placeholder="••••••••" required id="regPass">
+                </div>
+                <button type="submit" class="auth-submit-btn">Create Account</button>
+            </form>
+
+            <div class="auth-footer">
+                <p id="toggleAuthText">Don't have an account? <a href="#" onclick="toggleAuthMode()">Register</a></p>
+            </div>
+        </div>
+    </div>
+
+    <div id="dashboardWrapper" class="dashboard-container hidden">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo">
+                <i data-lucide="activity"></i>
+                <span>OncoMonitor</span>
+            </div>
+            <!-- Navigation will be injected based on role -->
+            <ul id="navLinks" class="nav-links"></ul>
+
+            <div class="sidebar-footer">
+                <button class="logout-btn" onclick="logout()">
+                    <i data-lucide="log-out"></i> Logout
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header>
+                <div class="header-content">
+                    <h1 id="greetingTitle">Dashboard</h1>
+                    <p id="subGreeting" style="color: var(--text-muted)">Welcome back</p>
+                </div>
+                <div id="profileSection" class="patient-profile">
+                    <!-- Profile info injected based on role -->
+                </div>
+            </header>
+
+            <!-- Role Specific Content -->
+            <div id="overviewContent">
+                <div id="doctorView" class="hidden">
+                    <div class="stats-grid" id="doctorStats">
+                        <!-- Doctor stats will be injected -->
+                    </div>
+                    <div class="charts-grid">
+                        <div class="chart-container">
+                            <h3>Clinic Analytics (Cohort Trends)</h3>
+                            <canvas id="doctorChart"></canvas>
+                        </div>
+                        <div class="risk-engine" id="doctorAlerts">
+                            <h3><i data-lucide="shield-alert"></i> Critical Patient Alerts</h3>
+                            <!-- Alerts injected -->
+                        </div>
+                    </div>
+                </div>
+
+                <div id="patientView" class="hidden">
+                    <div class="stats-grid" id="patientStats">
+                        <!-- Patient stats will be injected -->
+                    </div>
+                    <!-- Charts Section -->
+                    <div class="charts-grid">
+                        <div class="chart-container">
+                            <h3>Symptom Burden Trend (ePROs)</h3>
+                            <canvas id="symptomChart"></canvas>
+                        </div>
+                        <div class="risk-engine">
+                            <h3><i data-lucide="cpu" style="margin-right: 8px"></i> AI Risk Engine</h3>
+                            <div id="patientAlerts">
+                                <!-- Alerts injected -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="subPageContent" class="hidden">
+                <!-- Swappable page content will be injected here -->
+            </div>
+
+            <footer>
+                CN Project: Data-Driven Chemotherapy Monitoring System © 2026
+            </footer>
+        </main>
+    </div>
+
+    <script src="main.js"></script>
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+
+</html>
