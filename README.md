@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # OncoMonitor
 
 OncoMonitor is a full-stack, personalized digital health dashboard designed for oncology patients and healthcare providers. It provides real-time monitoring, symptom tracking, and AI-driven insights to improve chemotherapy outcomes.
@@ -52,5 +53,14 @@ OncoMonitor is a full-stack, personalized digital health dashboard designed for 
 - `database.py`: Database schema and initialization logic.
 - `oncomonitor.db`: SQLite database file (ignored in git).
 
+## 👥 Authors
+- **Vridhi Vazirani**
+- **Kashish**
+- **Jaaswanth**
+- **Taha Anas**
+
 ---
 *Developed as a Data-Driven Chemotherapy Monitoring System © 2026*
+=======
+# Chemotherapy-monitoring
+>>>>>>> 33c02aa49a3f7de9507b1be41fb8206a5a8db0e6
