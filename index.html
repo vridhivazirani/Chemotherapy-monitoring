@@ -164,6 +164,29 @@
                 <!-- Swappable page content will be injected here -->
             </div>
 
+            <!-- Review Modal for Doctors -->
+            <div id="reviewModal" class="modal hidden">
+                <div class="modal-content glass">
+                    <div class="modal-header">
+                        <h3>Update Clinical Review</h3>
+                        <button class="close-btn" onclick="closeReviewModal()">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <p id="modalPatientInfo"
+                            style="margin-bottom: 1rem; color: var(--secondary); font-weight: 600;"></p>
+                        <textarea id="reviewTextArea" class="chat-input"
+                            placeholder="Type clinical notes and recommendations here..."
+                            style="min-height: 200px; width: 100%; margin-bottom: 1.5rem;"></textarea>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="take-btn"
+                            style="background: transparent; border: 1px solid var(--text-muted); color: var(--text-muted)"
+                            onclick="closeReviewModal()">Cancel</button>
+                        <button class="take-btn" onclick="saveClinicalReview()">Save Review</button>
+                    </div>
+                </div>
+            </div>
+
             <footer>
                 CN Project: Data-Driven Chemotherapy Monitoring System © 2026 <br>
                 Created by: Vridhi Vazirani, Kashish, Jaaswanth & Taha Anas

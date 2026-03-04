@@ -58,9 +58,9 @@ const pageTemplates = {
                     </tr>
                 </thead>
                 <tbody>
-                    <tr><td>ID-8821</td><td>John Doe</td><td>Stage III NSCLC</td><td>3 / 6</td><td><span class="status-badge" style="background: rgba(255, 184, 0, 0.1); color: var(--warning)">G2</span></td><td><button class="take-btn">Review</button></td></tr>
-                    <tr><td>ID-9012</td><td>Jane Smith</td><td>Stage II Breast</td><td>1 / 4</td><td><span class="status-badge status-active">G1</span></td><td><button class="take-btn">Review</button></td></tr>
-                    <tr><td>ID-8543</td><td>Robert Brown</td><td>Stage IV Colon</td><td>5 / 8</td><td><span class="status-badge" style="background: rgba(255, 77, 77, 0.1); color: var(--danger)">G3</span></td><td><button class="take-btn">Review</button></td></tr>
+                    <tr><td>ID-8821</td><td>John Doe</td><td>Stage III NSCLC</td><td>3 / 6</td><td><span class="status-badge" style="background: rgba(255, 184, 0, 0.1); color: var(--warning)">G2</span></td><td><button class="take-btn" onclick="openReviewModal(2, 'John Doe')">Review</button></td></tr>
+                    <tr><td>ID-9012</td><td>Jane Smith</td><td>Stage II Breast</td><td>1 / 4</td><td><span class="status-badge status-active">G1</span></td><td><button class="take-btn" onclick="alert('Demo patient. Only John Doe is connected to DB.')">Review</button></td></tr>
+                    <tr><td>ID-8543</td><td>Robert Brown</td><td>Stage IV Colon</td><td>5 / 8</td><td><span class="status-badge" style="background: rgba(255, 77, 77, 0.1); color: var(--danger)">G3</span></td><td><button class="take-btn" onclick="alert('Demo patient. Only John Doe is connected to DB.')">Review</button></td></tr>
                 </tbody>
             </table>
         </div>
@@ -661,6 +661,56 @@ function initChart(canvasId, type) {
             }
         }
     });
+}
+
+// --- Modal Logic ---
+let currentlyReviewingId = null;
+
+async function openReviewModal(patientId, patientName) {
+    currentlyReviewingId = patientId;
+    document.getElementById('modalPatientInfo').innerText = `Patient: ${patientName} (ID-${patientId})`;
+    document.getElementById('reviewTextArea').value = 'Loading...';
+    document.getElementById('reviewModal').classList.remove('hidden');
+
+    try {
+        const response = await fetch(`${BASE_URL}/patient/review/${patientId}`);
+        const data = await response.json();
+        document.getElementById('reviewTextArea').value = data.review || '';
+    } catch (e) {
+        console.error("Fetch review failed", e);
+        document.getElementById('reviewTextArea').value = '';
+    }
+}
+
+function closeReviewModal() {
+    document.getElementById('reviewModal').classList.add('hidden');
+    currentlyReviewingId = null;
+}
+
+async function saveClinicalReview() {
+    const reviewText = document.getElementById('reviewTextArea').value;
+    if (!currentlyReviewingId) return;
+
+    try {
+        const response = await fetch(`${BASE_URL}/patient/review/update`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                user_id: currentlyReviewingId,
+                review: reviewText
+            })
+        });
+        const data = await response.json();
+        if (data.success) {
+            alert("Clinical review updated successfully!");
+            closeReviewModal();
+        } else {
+            alert("Failed to update review.");
+        }
+    } catch (e) {
+        console.error("Save review failed", e);
+        alert("Error connecting to server.");
+    }
 }
 
 

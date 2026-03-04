@@ -103,6 +103,18 @@ def get_clinical_review(user_id):
         return jsonify({"review": user['clinical_review']})
     return jsonify({"success": False, "message": "User not found"}), 404
 
+@app.route('/api/patient/review/update', methods=['POST'])
+def update_clinical_review():
+    data = request.json
+    user_id = data.get('user_id')
+    review_text = data.get('review')
+
+    conn = get_db_connection()
+    conn.execute('UPDATE users SET clinical_review = ? WHERE id = ?', (review_text, user_id))
+    conn.commit()
+    conn.close()
+    return jsonify({"success": True})
+
 if __name__ == '__main__':
     # Ensure DB is initialized
     database.init_db()
