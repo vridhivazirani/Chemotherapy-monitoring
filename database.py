@@ -15,7 +15,8 @@ def init_db():
         email TEXT UNIQUE NOT NULL,
         password TEXT NOT NULL,
         role TEXT NOT NULL,
-        extra_info TEXT
+        extra_info TEXT,
+        clinical_review TEXT
     )
     ''')
 
@@ -68,8 +69,9 @@ def init_db():
                        ('Dr. Sarah Mitchell', 'sarah@hospital.com', 'admin123', 'doctor', 'MD-99821-XX'))
         
         # Seed a patient
-        cursor.execute("INSERT INTO users (name, email, password, role, extra_info) VALUES (?, ?, ?, ?, ?)",
-                       ('John Doe', 'john@onco.com', 'patient123', 'patient', 'ID-8821'))
+        cursor.execute("INSERT INTO users (name, email, password, role, extra_info, clinical_review) VALUES (?, ?, ?, ?, ?, ?)",
+                       ('John Doe', 'john@onco.com', 'patient123', 'patient', 'ID-8821', 
+                        'Dr. Mitchell reviewed your vitals at 09:00 AM. Your white blood cell count is recovering well. Maintain current hydration levels and continue the anti-emetic schedule.'))
         
         patient_id = cursor.lastrowid
 

@@ -94,6 +94,15 @@ def get_doctor_stats():
         { "label": 'Clinic Capacity', "value": '85%', "detail": 'Day unit load', "icon": 'activity', "color": 'var(--secondary)' }
     ])
 
+@app.route('/api/patient/review/<int:user_id>', methods=['GET'])
+def get_clinical_review(user_id):
+    conn = get_db_connection()
+    user = conn.execute('SELECT clinical_review FROM users WHERE id = ?', (user_id,)).fetchone()
+    conn.close()
+    if user:
+        return jsonify({"review": user['clinical_review']})
+    return jsonify({"success": False, "message": "User not found"}), 404
+
 if __name__ == '__main__':
     # Ensure DB is initialized
     database.init_db()

@@ -227,6 +227,28 @@ async function setRole(role) {
         else patientData.stats = statsData;
     } catch (e) { console.error("Stats fetch failed", e); }
 
+    // Fetch Clinical Review for Patient
+    if (role === 'patient') {
+        const clinicalReviewContainer = document.getElementById('clinicalReviewContainer');
+        const clinicalReviewText = document.getElementById('clinicalReviewText');
+        const reviewTimestamp = document.getElementById('reviewTimestamp');
+
+        try {
+            const response = await fetch(`${BASE_URL}/patient/review/${currentUser.id}`);
+            const reviewData = await response.json();
+            if (reviewData.review) {
+                clinicalReviewContainer.classList.remove('hidden');
+                clinicalReviewText.innerText = reviewData.review;
+                reviewTimestamp.innerText = `Refreshed: ${new Date().toLocaleTimeString()}`;
+            } else {
+                clinicalReviewContainer.classList.add('hidden');
+            }
+        } catch (e) {
+            console.error("Clinical review fetch failed", e);
+            clinicalReviewContainer.classList.add('hidden');
+        }
+    }
+
     const data = role === 'doctor' ? doctorData : patientData;
 
     // Reset views
